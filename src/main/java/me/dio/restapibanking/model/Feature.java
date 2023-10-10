@@ -1,39 +1,8 @@
 package me.dio.restapibanking.model;
 
-public class Feature {
+import jakarta.persistence.Entity;
 
-    private Long id;
-    private String icon;
-    private String description;
+@Entity(name = "tb_feature")
+public class Feature extends BaseItem {
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Feature(String icon, String desc) {
-        this.description = desc;
-        this.icon = icon;
-    }
-
-    public Feature() {}
 }
