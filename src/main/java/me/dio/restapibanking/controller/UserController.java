@@ -1,6 +1,7 @@
 package me.dio.restapibanking.controller;
 
 import me.dio.restapibanking.model.User;
+import me.dio.restapibanking.model.UserDTO;
 import me.dio.restapibanking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +20,39 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        User user = userService.findById(id);
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        UserDTO user = userService.findById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/account/{accountNumber}")
+    public ResponseEntity<UserDTO> findByAccountNumber(@PathVariable String accountNumber) {
+        UserDTO user = userService.findByAccountNumber(accountNumber);
         return ResponseEntity.ok(user);
     }
 
     @PostMapping
-    public ResponseEntity<User> createNewUser(@RequestBody User userToCreate) {
-        User userCreated = userService.create(userToCreate);
+    public ResponseEntity<UserDTO> createNewUser(@RequestBody User userToCreate) {
+        UserDTO userCreated = userService.create(userToCreate);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}")
                 .buildAndExpand(userCreated.getId())
                 .toUri();
         return ResponseEntity.created(location).body(userCreated);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody User user) {
+        userService.update(id, user);
+        return ResponseEntity.ok(new UserDTO(user));
+    }
+
+
 
 }
